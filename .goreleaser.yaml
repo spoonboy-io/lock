@@ -8,7 +8,7 @@ builds:
       - linux
       - darwin
     ldflags:
-      - -s -w -X main.version={{.Tag}} -X main.goversion=1.18
+      - -s -w -X main.version={{.Tag}} -X main.goversion=1.19
     main: ./cmd/lock
 archives:
   - id: foo
