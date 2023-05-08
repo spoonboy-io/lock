@@ -1,0 +1,9 @@
+/.idea
+.DS_Store
+*.md
+/.github
+/morpheus-plugin
+.goreleaser.yaml
+LICENSE
+Makefile
+/internal/git
