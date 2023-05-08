@@ -3,13 +3,18 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
 // NewProject handles the creation of a new plugin project folder cloned
 // from either head or a specfic git tag of the template-plugin github project
-func NewProject(args []string) error {
+func NewProject(args []string, logger *koan.Logger) error {
 	// set defaults
 	projectName := internal.DEFAULT_PROJECT_NAME
 	reference := ""
@@ -18,15 +23,16 @@ func NewProject(args []string) error {
 	// precede the arguments which don't want, so we do ourselves
 	for _, v := range args[1:] {
 		if strings.HasPrefix(v, "--name=") {
-			projectName = strings.TrimLeft(v, "--name=")
+			projectName = strings.TrimPrefix(v, "--name=")
 		}
 		if strings.HasPrefix(v, "--tag=") {
-			reference = strings.TrimLeft(v, "--tag=")
+			reference = strings.TrimPrefix(v, "--tag=")
 		}
 	}
 
 	// valid tag (if not default)
 	if reference != "" {
+		logger.Info("checking tag exists")
 		tags, err := internal.ListTags()
 		if err != nil {
 			return err
@@ -43,14 +49,39 @@ func NewProject(args []string) error {
 		}
 	}
 
-	// tag is good so clone the repo and checkout that ref (or head)
-	fmt.Println(projectName, reference)
+	// create the project folder
+	logger.Info(fmt.Sprintf("creating new project folder '%s'", projectName))
+	if err := os.Mkdir(projectName, 0755); err != nil {
+		return err
+	}
 
+	// clone the repository into the directory
+	// logging convenience
+	target := fmt.Sprintf("tag '%s'", reference)
+	if reference == "" {
+		target = "'latest'"
+	}
+	logger.Info(fmt.Sprintf("cloning repository, checking out %s", target))
+
+	// first set up reference to clone if a tag
+	if reference != "" {
+		reference = fmt.Sprintf("refs/tags/%s", reference)
+	}
+
+	if _, err := git.PlainClone(projectName, false, &git.CloneOptions{
+		URL:           internal.PROJECT_URL,
+		Progress:      nil,
+		ReferenceName: plumbing.ReferenceName(reference),
+	}); err != nil {
+		return err
+	}
+
+	// remove .git folder, so clean for new git project
+	gitFolder := filepath.Join(projectName, ".git")
+	if err := os.RemoveAll(gitFolder); err != nil {
+		return err
+	}
+
+	logger.Info("clone completed, new project folder is ready.")
 	return nil
 }
-
-/*
-
-
- */
-

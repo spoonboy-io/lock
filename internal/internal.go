@@ -13,6 +13,7 @@ const (
 	DEFAULT_PROJECT_NAME = "morpheus-plugin-project"
 )
 
+// Help returns a multistring for display on help argument or any unrecognised argument
 func Help() string {
 	return `
 
@@ -40,17 +41,16 @@ Supported arguments are:
            --token  A bearer token with which to authenticate (exclude the BEARER prefix)`
 }
 
+// ListTags clones the git repository to memory and fetches all the available tags
 func ListTags() ([]string, error) {
 	tagList := []string{}
-
-	url := PROJECT_URL
 
 	// clone to memory
 	fs := memfs.New()
 	storer := memory.NewStorage()
 
 	r, err := git.Clone(storer, fs, &git.CloneOptions{
-		URL: url,
+		URL: PROJECT_URL,
 	})
 	if err != nil {
 		return tagList, err
@@ -73,5 +73,6 @@ func ListTags() ([]string, error) {
 	if err != nil {
 		return tagList, err
 	}
+
 	return tagList, nil
 }

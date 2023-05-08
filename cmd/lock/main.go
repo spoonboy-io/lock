@@ -27,7 +27,7 @@ func main() {
 	switch args[0] {
 	case "tags":
 		// list tags
-		if tagInfo, err := handlers.Tags(); err != nil {
+		if tagInfo, err := handlers.ListTags(logger); err != nil {
 			logger.FatalError("problem listing repository tags", err)
 		} else {
 			fmt.Println(tagInfo)
@@ -35,7 +35,7 @@ func main() {
 		}
 	case "new":
 		// create a new project
-		if err := handlers.NewProject(args); err != nil {
+		if err := handlers.NewProject(args, logger); err != nil {
 			logger.FatalError("problem creating new project", err)
 		}
 	case "watch":
