@@ -8,10 +8,11 @@ import (
 )
 
 const (
-	//PROJECT_URL          = "https://github.com/spoonboy-io/plugin-template.git"
-	PROJECT_URL          = "https://github.com/spoonboy-io/switch.git"
+	METADATA_URL         = "https://raw.githubusercontent.com/spoonboy-io/lock-plugin-metadata/main/lock.yaml"
 	DEFAULT_PROJECT_NAME = "morpheus-plugin-project"
 )
+
+var ()
 
 // Help returns a multistring for display on help argument or any unrecognised argument
 func Help() string {

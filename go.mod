@@ -3,10 +3,10 @@ module github.com/spoonboy-io/lock
 go 1.19
 
 require (
-	github.com/fsnotify/fsnotify v1.6.0
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.6.1
 	github.com/spoonboy-io/koan v0.1.0
+	gopkg.in/yaml.v3 v3.0.0
 )
 
 require (

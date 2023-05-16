@@ -1,5 +1,5 @@
-run:
-	go run ./cmd/lock/*.go
+build:
+	go build ./cmd/lock/.
 
 test:
 	go test -v --cover ./...
