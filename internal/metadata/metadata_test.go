@@ -112,6 +112,37 @@ func TestParseMetadataYAML(t *testing.T) {
 			},
 			nil,
 		},
+		{
+			"morpheus versioning true, prefixes supplied, should use those",
+			[]byte(`---
+- plugin:
+    category: tab
+    description: Shows a tab, which reads from a database table and allows delete operations via controller
+    url: https://github.com/spoonboy-io/custom-tab-plugin.git
+    tags: database,starter,controller,ui
+    versioning:
+      semantic: true
+      semanticPrefix: version
+      morpheus: true
+      morpheusPrefix: release`),
+			metadata.Metadata{
+				{
+					metadata.Plugin{
+						Category:    "tab",
+						Description: "Shows a tab, which reads from a database table and allows delete operations via controller",
+						URL:         "https://github.com/spoonboy-io/custom-tab-plugin.git",
+						Tags:        "database,starter,controller,ui",
+						Versioning: metadata.Versioning{
+							Semantic:       true,
+							SemanticPrefix: "version",
+							Morpheus:       true,
+							MorpheusPrefix: "release",
+						},
+					},
+				},
+			},
+			nil,
+		},
 	}
 
 	for _, tc := range testCases {
