@@ -42,7 +42,10 @@ func main() {
 	args := os.Args[1:]
 
 	switch args[0] {
-	case "tags":
+	case "templates":
+		// list all the templates
+
+	case "inspect":
 		// list tags
 		if tagInfo, err := handlers.ListTags(logger); err != nil {
 			logger.FatalError("problem listing repository tags", err)

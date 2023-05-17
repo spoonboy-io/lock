@@ -1,6 +1,5 @@
 /.idea
 .DS_Store
 lock
-*.md
 internal/handlers/watcher.go
 .lock_cache
