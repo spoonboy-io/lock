@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       -
         name: Fetch all tags
-        run: git fetch --force --tags
+        run: gitops fetch --force --tags
       -
         name: Set up Go
         uses: actions/setup-go@v3

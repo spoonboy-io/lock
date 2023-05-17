@@ -7,13 +7,14 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
+	"github.com/spoonboy-io/lock/internal/gitops"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
 // NewProject handles the creation of a new plugin project folder cloned
-// from either head or a specfic git tag of the template-plugin github project
+// from either head or a specfic gitops tag of the template-plugin github project
 func NewProject(args []string, logger *koan.Logger) error {
 	// set defaults
 	projectName := internal.DEFAULT_PROJECT_NAME
@@ -33,7 +34,7 @@ func NewProject(args []string, logger *koan.Logger) error {
 	// valid tag (if not default)
 	if reference != "" {
 		logger.Info("checking tag exists")
-		tags, err := internal.ListTags()
+		tags, err := gitops.ListTags()
 		if err != nil {
 			return err
 		}
@@ -76,8 +77,8 @@ func NewProject(args []string, logger *koan.Logger) error {
 		return err
 	}
 
-	// remove .git folder, so clean for new git project
-	gitFolder := filepath.Join(projectName, ".git")
+	// remove .gitops folder, so clean for new gitops project
+	gitFolder := filepath.Join(projectName, ".gitops")
 	if err := os.RemoveAll(gitFolder); err != nil {
 		return err
 	}

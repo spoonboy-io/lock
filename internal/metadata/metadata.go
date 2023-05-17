@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/spoonboy-io/koan"
 	"gopkg.in/yaml.v3"
+	"strings"
 )
 
 // Metadata is a representation of the parsed YAML metadata
@@ -13,6 +14,7 @@ type Metadata []struct {
 
 // Plugin represents the metadata for a single plugin starter
 type Plugin struct {
+	Name            string
 	Category        string     `yaml:"category"`
 	Description     string     `yaml:"description"`
 	URL             string     `yaml:"url"`
@@ -81,6 +83,8 @@ func ParseMetadataYAML(data []byte, logger *koan.Logger) (Metadata, error) {
 		// check category is allowed, and and not disabled and append to meta
 		if ok := validCategory(p.Category); ok {
 			if !p.Disabled {
+				// parse the name
+				temp[i].Name = stripName(p.URL)
 				meta = append(meta, temp[i])
 			}
 		}
@@ -97,4 +101,10 @@ func validCategory(cat string) bool {
 		}
 	}
 	return valid
+}
+
+func stripName(uri string) string {
+	temp := strings.Split(uri, "/")
+	temp2 := temp[len(temp)-1:]
+	return strings.TrimSuffix(temp2[0], ".gitops")
 }

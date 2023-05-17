@@ -5,6 +5,7 @@ import (
 	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/handlers"
+	"github.com/spoonboy-io/lock/internal/help"
 	"github.com/spoonboy-io/lock/internal/metadata"
 	"os"
 )
@@ -16,14 +17,8 @@ var (
 
 var logger *koan.Logger
 
-func printHelpExit() {
-	fmt.Printf(internal.Help(), version, goversion)
-	os.Exit(0)
-}
-
 func main() {
 	logger = &koan.Logger{}
-	//ctx := context.Background() // do we need?
 
 	// get metadata
 	raw, err := metadata.GetMetadata(internal.METADATA_URL, logger)
@@ -40,7 +35,8 @@ func main() {
 	_ = metadata
 
 	if len(os.Args) < 2 {
-		printHelpExit()
+		fmt.Printf(help.Options(), version, goversion)
+		os.Exit(0)
 	}
 
 	args := os.Args[1:]
@@ -66,6 +62,7 @@ func main() {
 		}
 	default:
 		// handles help argument also
-		printHelpExit()
+		fmt.Printf(help.Options(), version, goversion)
+		os.Exit(0)
 	}
 }

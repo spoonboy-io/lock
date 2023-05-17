@@ -3,12 +3,12 @@ package handlers
 import (
 	"fmt"
 	"github.com/spoonboy-io/koan"
-	"github.com/spoonboy-io/lock/internal"
+	"github.com/spoonboy-io/lock/internal/gitops"
 	"strings"
 )
 
 // ListTags formats a slice of tags into meaningful output. It uses internal.ListTags
-// to perform the git operations and generate the slice of tags which are parsed here
+// to perform the gitops operations and generate the slice of tags which are parsed here
 func ListTags(logger *koan.Logger) (string, error) {
 	tagInfo := ""
 	template := `
@@ -27,7 +27,7 @@ These tags are release versions of the plugin-template:
 `
 	logger.Info("fetching tags from repository")
 	var morp, release string
-	tags, err := internal.ListTags()
+	tags, err := gitops.ListTags()
 	if err != nil {
 		return tagInfo, err
 	}

@@ -147,7 +147,6 @@ func TestParseMetadataYAML(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			//config = tc.config
 			gotRes, gotErr := metadata.ParseMetadataYAML(tc.yaml, logger)
 			if !reflect.DeepEqual(gotRes, tc.wantRes) {
 				// TODO temp fix to ensure what are the same results does not cause test to fail
