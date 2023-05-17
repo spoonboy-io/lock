@@ -9,25 +9,22 @@ func Options() string {
  Version: %s, Go build: %s                    
  -----------------------------------------------
 
- Lock should be run with a single argument suffix i.e. lock <argument>
- Supported arguments are:
+ Supported command arguments and flags:
 
-   help         Prints this help section
+   help                Prints this help section
 
-   templates    Print out a list of starter project templates which are available to select
-                Specify a flag to filter by category:
-                  --category    Specify the category as a filter
-				  --morpheus	Specify the minimum version of Morpheus as a filter 
+   templates           Print out a list of starter project templates which are available to select
+                       Specify a flag to filter by category:
+                         --category    Specify the category as a filter
+                         --morpheus	   Specify the minimum version of Morpheus as a filter 
 
-   inspect      Print the git tag references available to choose from for a project template
-                Specify flag for the template:
-                  --template    Specify the template to inspect (required)
+   inspect <template>  Print the git tag references available to choose from for a project template
+                       template can be name or id
 
-   new          Creates a new plugin project from a starter template repository,
-                Specify flags for the template and to override the defaults:
-                  --template    Specify the template use (required) 
-                  --name        Specify a project folder name (default: morpheus-plugin)
-                  --tag         Specify a tag to create project from (default: head)
+   new <template>      Creates a new plugin project from a starter template repository,
+                       template can be name or id. Specify flags for the template and to override the defaults:
+                         --name        Specify a project folder name (default: morpheus-plugin)
+                         --tag         Specify a tag to create project from (default: head)
 `
 }
 

@@ -1,0 +1,118 @@
+package handlers
+
+import (
+	"fmt"
+	"github.com/spoonboy-io/koan"
+	"github.com/spoonboy-io/lock/internal/metadata"
+	"strings"
+)
+
+// ListTemplates will process metadata and provide output
+// related to the available starter repositories
+func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
+	// handle optional flags --category and --morpheus
+	var filterCat, filterMorph string
+
+	var rowString = "%s  %s  %s  %s  %s  %s\n"
+	var maxId, maxName, maxCat, maxDesc, maxVer, maxTags int
+
+	for _, v := range args[1:] {
+		if strings.HasPrefix(v, "--category=") {
+			filterCat = strings.TrimPrefix(v, "--category=")
+		}
+		if strings.HasPrefix(v, "--morpheus=") {
+			filterMorph = strings.TrimPrefix(v, "--morpheus=")
+		}
+	}
+
+	var output string
+	for i, p := range *meta {
+		// check filters
+		if filterCat != "" && p.Category != filterCat {
+			continue
+		}
+		if filterMorph != "" && p.MinimumMorpheus != filterMorph {
+			continue
+		}
+
+		// lets set a max length on description
+		if len(p.Description) > 40 {
+			p.Description = cutString(p.Description, 40)
+		}
+		id := fmt.Sprintf("%d.", i+1)
+		output += fmt.Sprintf(rowString, id, p.Name, p.Category, p.Description, p.MinimumMorpheus, p.Tags)
+
+		// keep track of lengths for header
+		if len(id) > maxId {
+			maxId = len(id)
+		}
+		// TODO strictly this doesn't deal with UTF 8
+		if len(p.Name) > maxName {
+			maxName = len(p.Name)
+		}
+		if len(p.Category) > maxCat {
+			maxCat = len(p.Category)
+		}
+		if len(p.Description) > maxDesc {
+			maxDesc = len(p.Description)
+		}
+		if len(p.MinimumMorpheus) > maxVer {
+			maxVer = len(p.MinimumMorpheus)
+		}
+		if len(p.Tags) > maxTags {
+			maxTags = len(p.Tags)
+		}
+	}
+
+	// add header
+	headerString := "%s  %s  %s  %s  %s  %s\n"
+	idH := title("ID", maxId)
+	idU := line(maxId)
+	nameH := title("NAME", maxName)
+	nameU := line(maxName)
+	catH := title("CAT", maxCat)
+	catU := line(maxCat)
+	descH := title("DESCRIPTION", maxDesc)
+	descU := line(maxDesc)
+	minH := title("MIN", maxVer)
+	minU := line(maxVer)
+	tagH := title("TAGS", maxTags)
+	tagU := line(maxTags)
+
+	header1 := fmt.Sprintf(headerString, idH, nameH, catH, descH, minH, tagH)
+	header2 := fmt.Sprintf(headerString, idU, nameU, catU, descU, minU, tagU)
+
+	output = fmt.Sprintf("\n%s%s%s", header1, header2, output)
+	fmt.Println(output)
+	return "", nil
+}
+
+func cutString(data string, cutAt int) string {
+	d := []rune(data)
+	short := ""
+	if len(d) > cutAt {
+		if string(d[cutAt-1]) == " " {
+			cutAt--
+		}
+		short = fmt.Sprintf("%s..", string(d[0:cutAt]))
+	}
+	return short
+}
+
+func line(num int) string {
+	l := ""
+	for i := 0; i < num; i++ {
+		l += "-"
+	}
+
+	return l
+}
+
+func title(key string, num int) string {
+	t := key
+	c := num - len(t)
+	for i := 0; i < c; i++ {
+		t += " "
+	}
+	return t
+}

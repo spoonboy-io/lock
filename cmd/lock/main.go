@@ -44,15 +44,22 @@ func main() {
 	switch args[0] {
 	case "templates":
 		// list all the templates
-
-	case "inspect":
-		// list tags
-		if tagInfo, err := handlers.ListTags(logger); err != nil {
-			logger.FatalError("problem listing repository tags", err)
-		} else {
-			fmt.Println(tagInfo)
-			os.Exit(0)
+		var templateInfo string
+		templateInfo, err := handlers.ListTemplates(&metadata, args, logger)
+		if err != nil {
+			logger.FatalError("problem listing templates", err)
 		}
+		fmt.Println(templateInfo)
+		os.Exit(0)
+	case "inspect":
+		// list tags for a template
+		var tagInfo string
+		tagInfo, err := handlers.ListTags(logger)
+		if err != nil {
+			logger.FatalError("problem listing repository tags", err)
+		}
+		fmt.Println(tagInfo)
+		os.Exit(0)
 	case "new":
 		// create a new project
 		if err := handlers.NewProject(args, logger); err != nil {

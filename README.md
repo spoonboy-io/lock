@@ -27,7 +27,7 @@ TODO
 TODO
 
 ### Installation
-Grab the tar.gz or zip archive for your OS from the [releases page](https://github.com/spoonboy-io/dujour/releases/latest).
+Grab the tar.gz or zip archive for your OS from the [releases page](https://github.com/spoonboy-io/lock/releases/latest).
 
 Unpack it to the target host, and then run.
 
