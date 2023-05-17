@@ -12,7 +12,7 @@ import (
 func createTestServer(data string, status int) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		responseBody := data
-		responseStatusCode := http.StatusOK
+		responseStatusCode := status
 		w.WriteHeader(responseStatusCode)
 		w.Write([]byte(responseBody))
 	}))
@@ -62,6 +62,31 @@ func TestGetMetadata(t *testing.T) {
 
 	if err := os.Remove(internal.METADATA_CACHE); err != nil {
 		t.Fatalf("something went wrong: %v", err)
+	}
+}
+
+func TestGetMetadataBadResponse(t *testing.T) {
+	testCases := []struct {
+		name         string
+		serverStatus int
+	}{
+		{
+			"bad response",
+			500,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// create test server
+			testServer := createTestServer("", tc.serverStatus)
+			_, gotErr := GetMetadata(testServer.URL)
+			if gotErr == nil {
+				t.Errorf("wanted error but got nil")
+			}
+
+			testServer.Close()
+		})
 	}
 }
 
