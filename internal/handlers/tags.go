@@ -8,7 +8,7 @@ import (
 )
 
 // ListTags formats a slice of tags into meaningful output. It uses internal.ListTags
-// to perform the gitops operations and generate the slice of tags which are parsed here
+// to perform the git operations and generate the slice of tags which are parsed here
 func ListTags(logger *koan.Logger) (string, error) {
 	tagInfo := ""
 	template := `

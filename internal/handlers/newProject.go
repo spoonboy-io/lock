@@ -14,7 +14,7 @@ import (
 )
 
 // NewProject handles the creation of a new plugin project folder cloned
-// from either head or a specfic gitops tag of the template-plugin github project
+// from either head or a specfic git tag of the template-plugin github project
 func NewProject(args []string, logger *koan.Logger) error {
 	// set defaults
 	projectName := internal.DEFAULT_PROJECT_NAME
@@ -77,8 +77,8 @@ func NewProject(args []string, logger *koan.Logger) error {
 		return err
 	}
 
-	// remove .gitops folder, so clean for new gitops project
-	gitFolder := filepath.Join(projectName, ".gitops")
+	// remove .git folder, so clean for new gitops project
+	gitFolder := filepath.Join(projectName, ".git")
 	if err := os.RemoveAll(gitFolder); err != nil {
 		return err
 	}

@@ -19,7 +19,7 @@ func Options() string {
                   --category    Specify the category as a filter
 				  --morpheus	Specify the minimum version of Morpheus as a filter 
 
-   inspect      Print the gitops tag references available to choose from for a project template
+   inspect      Print the git tag references available to choose from for a project template
                 Specify flag for the template:
                   --template    Specify the template to inspect (required)
 

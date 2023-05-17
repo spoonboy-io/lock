@@ -106,5 +106,5 @@ func validCategory(cat string) bool {
 func stripName(uri string) string {
 	temp := strings.Split(uri, "/")
 	temp2 := temp[len(temp)-1:]
-	return strings.TrimSuffix(temp2[0], ".gitops")
+	return strings.TrimSuffix(temp2[0], ".git")
 }
