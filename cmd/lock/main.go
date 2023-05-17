@@ -9,10 +9,15 @@ import (
 	"os"
 )
 
+var (
+	version   = "Development build"
+	goversion = "Unknown"
+)
+
 var logger *koan.Logger
 
 func printHelpExit() {
-	fmt.Println(internal.Help())
+	fmt.Printf(internal.Help(), version, goversion)
 	os.Exit(0)
 }
 
@@ -21,7 +26,7 @@ func main() {
 	//ctx := context.Background() // do we need?
 
 	// get metadata
-	raw, err := metadata.GetMetadata(internal.METADATA_URL)
+	raw, err := metadata.GetMetadata(internal.METADATA_URL, logger)
 	if err != nil {
 		logger.FatalError("problem retrieving metadata", err)
 	}
@@ -31,6 +36,7 @@ func main() {
 		logger.FatalError("problem parsing metadata", err)
 	}
 
+	//fmt.Println(metadata)
 	_ = metadata
 
 	if len(os.Args) < 2 {

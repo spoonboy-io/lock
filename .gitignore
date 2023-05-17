@@ -3,3 +3,4 @@
 lock
 *.md
 internal/handlers/watcher.go
+.lock_cache

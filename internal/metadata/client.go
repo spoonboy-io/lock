@@ -2,6 +2,7 @@ package metadata
 
 import (
 	"fmt"
+	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"io"
 	"net/http"
@@ -13,7 +14,7 @@ import (
 // github repository in which it is maintained, or from a local cache
 // since this is a CLI we don't want to make the same HTTP request on
 // every invocation so we cache the data with a TTL
-func GetMetadata(uri string) ([]byte, error) {
+func GetMetadata(uri string, logger *koan.Logger) ([]byte, error) {
 	var data []byte
 
 	// check cached exist
@@ -24,7 +25,7 @@ func GetMetadata(uri string) ([]byte, error) {
 		}
 		return data, nil
 	}
-
+	
 	client := http.Client{
 		Timeout: 5 * time.Second,
 	}

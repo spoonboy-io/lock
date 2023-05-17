@@ -13,12 +13,13 @@ type Metadata []struct {
 
 // Plugin represents the metadata for a single plugin starter
 type Plugin struct {
-	Category    string     `yaml:"category"`
-	Description string     `yaml:"description"`
-	URL         string     `yaml:"url"`
-	Tags        string     `yaml:"tags"`
-	Versioning  Versioning `yaml:"versioning"`
-	Disabled    bool       `yaml:"disabled"`
+	Category        string     `yaml:"category"`
+	Description     string     `yaml:"description"`
+	URL             string     `yaml:"url"`
+	Tags            string     `yaml:"tags"`
+	Versioning      Versioning `yaml:"versioning"`
+	MinimumMorpheus string     `yaml:"minimumMorpheus"`
+	Disabled        bool       `yaml:"disabled"`
 }
 
 // Versioning represents metadata which describes versioning semantics
@@ -77,9 +78,11 @@ func ParseMetadataYAML(data []byte, logger *koan.Logger) (Metadata, error) {
 			}
 		}
 
-		// check category is allowed, and if so append to meta
+		// check category is allowed, and and not disabled and append to meta
 		if ok := validCategory(p.Category); ok {
-			meta = append(meta, temp[i])
+			if !p.Disabled {
+				meta = append(meta, temp[i])
+			}
 		}
 	}
 

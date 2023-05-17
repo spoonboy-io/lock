@@ -1,6 +1,7 @@
 package metadata
 
 import (
+	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"net/http"
 	"net/http/httptest"
@@ -19,6 +20,8 @@ func createTestServer(data string, status int) *httptest.Server {
 }
 
 func TestGetMetadata(t *testing.T) {
+	logger := &koan.Logger{}
+
 	testCases := []struct {
 		name           string
 		serverResponse string
@@ -47,7 +50,7 @@ func TestGetMetadata(t *testing.T) {
 			// create test server
 			testServer := createTestServer(tc.serverResponse, tc.serverStatus)
 
-			gotData, gotErr := GetMetadata(testServer.URL)
+			gotData, gotErr := GetMetadata(testServer.URL, logger)
 			if gotErr != tc.wantErr {
 				t.Errorf("wanted '%v' got '%v'", tc.wantErr, gotErr)
 			}
@@ -66,6 +69,8 @@ func TestGetMetadata(t *testing.T) {
 }
 
 func TestGetMetadataBadResponse(t *testing.T) {
+	logger := &koan.Logger{}
+
 	testCases := []struct {
 		name         string
 		serverStatus int
@@ -80,7 +85,7 @@ func TestGetMetadataBadResponse(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// create test server
 			testServer := createTestServer("", tc.serverStatus)
-			_, gotErr := GetMetadata(testServer.URL)
+			_, gotErr := GetMetadata(testServer.URL, logger)
 			if gotErr == nil {
 				t.Errorf("wanted error but got nil")
 			}
