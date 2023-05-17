@@ -12,7 +12,6 @@ import (
 func ListTags(logger *koan.Logger) (string, error) {
 	tagInfo := ""
 	template := `
-
 Morpheus version tested tags
 ----------------------------
 These plugin-template versions have been tested against the specific version of Morpheus 
@@ -25,7 +24,6 @@ These tags are release versions of the plugin-template:
 
 %s
 `
-	logger.Info("fetching tags from repository")
 	var morp, release string
 	tags, err := gitops.ListTags()
 	if err != nil {

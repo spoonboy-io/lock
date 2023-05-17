@@ -3,13 +3,13 @@ package help
 // Options returns a multistring for display on help argument or any unrecognised argument
 func Options() string {
 	return `
- LOCK                                            
- -----------------------------------------------                                            
- CLI helper tool for Morpheus plugin development
- Version: %s, Go build: %s                    
- -----------------------------------------------
+LOCK                                            
+-----------------------------------------------                                            
+CLI helper tool for Morpheus plugin development
+Version: %s, Go build: %s                    
+-----------------------------------------------
 
- Supported command arguments and flags:
+Supported command arguments and flags:
 
    help                Prints this help section
 

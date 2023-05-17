@@ -26,6 +26,7 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 	}
 
 	var output string
+	var rowCount int
 	for i, p := range *meta {
 		// check filters
 		if filterCat != "" && p.Category != filterCat {
@@ -62,10 +63,10 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 		if len(p.Tags) > maxTags {
 			maxTags = len(p.Tags)
 		}
+		rowCount++
 	}
 
 	// add header
-	headerString := "%s  %s  %s  %s  %s  %s\n"
 	idH := title("ID", maxId)
 	idU := line(maxId)
 	nameH := title("NAME", maxName)
@@ -79,8 +80,14 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 	tagH := title("TAGS", maxTags)
 	tagU := line(maxTags)
 
-	header1 := fmt.Sprintf(headerString, idH, nameH, catH, descH, minH, tagH)
-	header2 := fmt.Sprintf(headerString, idU, nameU, catU, descU, minU, tagU)
+	header1 := ""
+	header2 := ""
+	if output == "" {
+		output = "No templates found.\n"
+	} else {
+		header1 = fmt.Sprintf(rowString, idH, nameH, catH, descH, minH, tagH)
+		header2 = fmt.Sprintf(rowString, idU, nameU, catU, descU, minU, tagU)
+	}
 
 	output = fmt.Sprintf("\n%s%s%s", header1, header2, output)
 	fmt.Println(output)
