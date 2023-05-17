@@ -5,6 +5,7 @@ import (
 	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/handlers"
+	"github.com/spoonboy-io/lock/internal/metadata"
 	"os"
 )
 
@@ -17,6 +18,20 @@ func printHelpExit() {
 
 func main() {
 	logger = &koan.Logger{}
+	//ctx := context.Background() // do we need?
+
+	// get metadata
+	raw, err := metadata.GetMetadata(internal.METADATA_URL)
+	if err != nil {
+		logger.FatalError("problem retrieving metadata", err)
+	}
+
+	metadata, err := metadata.ParseMetadataYAML(raw, logger)
+	if err != nil {
+		logger.FatalError("problem parsing metadata", err)
+	}
+
+	_ = metadata
 
 	if len(os.Args) < 2 {
 		printHelpExit()

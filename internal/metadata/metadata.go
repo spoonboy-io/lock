@@ -29,23 +29,6 @@ type Versioning struct {
 	MorpheusPrefix string `yaml:"morpheusPrefix"`
 }
 
-/*
-type Metadata []struct {
-	Plugin struct {
-		Category    string `yaml:"category"`
-		Description string `yaml:"description"`
-		URL         string `yaml:"url"`
-		Tags        string `yaml:"tags"`
-		Versioning  struct {
-			Semantic       bool   `yaml:"semantic"`
-			SemanticPrefix string `yaml:"semanticPrefix"`
-			Morpheus       bool   `yaml:"morpheus"`
-			MorpheusPrefix string `yaml:"morpheusPrefix"`
-		} `yaml:"versioning"`
-		Disabled bool `yaml:"disabled"`
-	} `yaml:"plugin"`
-}*/
-
 const (
 	// defaults
 	SEMANTIC_PREFIX = "v"

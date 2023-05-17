@@ -5,10 +5,14 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/storage/memory"
+	"time"
 )
 
 const (
-	METADATA_URL         = "https://raw.githubusercontent.com/spoonboy-io/lock-plugin-metadata/main/lock.yaml"
+	METADATA_URL   = "https://raw.githubusercontent.com/spoonboy-io/lock-plugin-metadata/main/lock.yaml"
+	METADATA_CACHE = ".lock_cache"
+	CACHE_TTL      = 5 * time.Minute
+
 	PROJECT_URL          = "https://github.com/spoonboy-io/switch.git"
 	DEFAULT_PROJECT_NAME = "morpheus-plugin-project"
 )
