@@ -18,6 +18,7 @@ func Inspect(meta *metadata.Metadata, args []string, logger *koan.Logger) (strin
 	output := `
 Template Information
 --------------------
+- ID: %d
 - Name: %s
 - Description: %s
 - Category: %s
@@ -40,7 +41,7 @@ Template Information
 	id, err := strconv.Atoi(template)
 	if err != nil {
 		// text, can't convert
-		p, err = meta.GetByName(template)
+		p, id, err = meta.GetByName(template)
 		if err != nil {
 			return "", err
 		}
@@ -132,7 +133,7 @@ Template Information
 	}
 
 	url := strings.TrimSuffix(p.URL, ".git")
-	tagInfo = fmt.Sprintf(output, p.Name, p.Description, p.Category, p.MinimumMorpheus, p.Tags, url, tagOutput)
+	tagInfo = fmt.Sprintf(output, id, p.Name, p.Description, p.Category, p.MinimumMorpheus, p.Tags, url, tagOutput)
 
 	return tagInfo, nil
 }

@@ -5,7 +5,6 @@ import (
 	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/handlers"
-	"github.com/spoonboy-io/lock/internal/help"
 	"github.com/spoonboy-io/lock/internal/metadata"
 	"os"
 )
@@ -32,7 +31,7 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		fmt.Printf(help.Options(), version, goversion)
+		fmt.Printf(handlers.Help(), version, goversion)
 		os.Exit(0)
 	}
 
@@ -62,6 +61,6 @@ func main() {
 		}
 	default:
 		// handles help argument also
-		fmt.Printf(help.Options(), version, goversion)
+		fmt.Printf(handlers.Help(), version, goversion)
 	}
 }

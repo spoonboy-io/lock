@@ -8,13 +8,16 @@ var (
 )
 
 // GetByName will iterate the metadata to retrieve by name key
-func (md *Metadata) GetByName(key string) (Plugin, error) {
+// we also return the index as useful
+func (md *Metadata) GetByName(key string) (Plugin, int, error) {
+	id := 0
 	for _, p := range *md {
+		id++
 		if p.Name == key {
-			return p.Plugin, nil
+			return p.Plugin, id, nil
 		}
 	}
-	return Plugin{}, ERR_NAME_NOT_FOUND
+	return Plugin{}, id, ERR_NAME_NOT_FOUND
 }
 
 // GetByIndex will iterate the metadata to retrieve by index
