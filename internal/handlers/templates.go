@@ -14,7 +14,6 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 	var filterCat, filterMorph string
 
 	var rowString = "%s  %s  %s  %s  %s  %s\n"
-	var maxId, maxName, maxCat, maxDesc, maxVer, maxTags int
 
 	for _, v := range args[1:] {
 		if strings.HasPrefix(v, "--category=") {
@@ -25,6 +24,49 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 		}
 	}
 
+	// we need these for consistent formatting
+	var maxId, maxName, maxCat, maxDesc, maxVer, maxTags int
+	for i, p := range *meta {
+
+		// check filters
+		if filterCat != "" && p.Category != filterCat {
+			continue
+		}
+		if filterMorph != "" && p.MinimumMorpheus != filterMorph {
+			continue
+		}
+
+		id := fmt.Sprintf("%d.", i+1)
+		// keep track of lengths for header
+		if len(id) > maxId {
+			maxId = len(id)
+		}
+
+		// TODO strictly this doesn't deal with UTF 8
+		if len(p.Name) > maxName {
+			maxName = len(p.Name)
+		}
+		if len(p.Category) > maxCat {
+			maxCat = len(p.Category)
+		}
+
+		lenDesc := len(p.Description)
+		if len(p.Description) > 40 {
+			lenDesc = 42
+		}
+		if lenDesc > maxDesc {
+			maxDesc = lenDesc
+		}
+
+		if len(p.MinimumMorpheus) > maxVer {
+			maxVer = len(p.MinimumMorpheus)
+		}
+		if len(p.Tags) > maxTags {
+			maxTags = len(p.Tags)
+		}
+	}
+
+	// now we know our string lengths, we can assemble the output
 	var output string
 	var rowCount int
 	for i, p := range *meta {
@@ -41,28 +83,7 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 			p.Description = cutString(p.Description, 40)
 		}
 		id := fmt.Sprintf("%d.", i+1)
-		output += fmt.Sprintf(rowString, id, p.Name, p.Category, p.Description, p.MinimumMorpheus, p.Tags)
-
-		// keep track of lengths for header
-		if len(id) > maxId {
-			maxId = len(id)
-		}
-		// TODO strictly this doesn't deal with UTF 8
-		if len(p.Name) > maxName {
-			maxName = len(p.Name)
-		}
-		if len(p.Category) > maxCat {
-			maxCat = len(p.Category)
-		}
-		if len(p.Description) > maxDesc {
-			maxDesc = len(p.Description)
-		}
-		if len(p.MinimumMorpheus) > maxVer {
-			maxVer = len(p.MinimumMorpheus)
-		}
-		if len(p.Tags) > maxTags {
-			maxTags = len(p.Tags)
-		}
+		output += fmt.Sprintf(rowString, padder(id, maxId), padder(p.Name, maxName), padder(p.Category, maxCat), padder(p.Description, maxDesc), padder(p.MinimumMorpheus, maxVer), padder(p.Tags, maxTags))
 		rowCount++
 	}
 
@@ -122,3 +143,13 @@ func title(key string, num int) string {
 	}
 	return t
 }
+
+func padder(key string, num int) string {
+
+	for i := len(key); i < num; i++ {
+		key += " "
+	}
+	return key
+}
+
+func calcMax() {}
