@@ -31,9 +31,6 @@ func main() {
 		logger.FatalError("problem parsing metadata", err)
 	}
 
-	//fmt.Println(metadata)
-	_ = metadata
-
 	if len(os.Args) < 2 {
 		fmt.Printf(help.Options(), version, goversion)
 		os.Exit(0)
@@ -52,7 +49,7 @@ func main() {
 		fmt.Printf(templateInfo)
 		os.Exit(0)
 	case "inspect":
-		// list tags for a template
+		// list metadata and fetch tags for template from remote
 		var tagInfo string
 		tagInfo, err := handlers.Inspect(&metadata, args, logger)
 		if err != nil {
@@ -64,11 +61,6 @@ func main() {
 		// create a new project
 		if err := handlers.NewProject(args, logger); err != nil {
 			logger.FatalError("problem creating new project", err)
-		}
-	case "watch":
-		// monitor, build & watch morpheus
-		if err := handlers.Watcher(args); err != nil {
-			logger.FatalError("problem watching project", err)
 		}
 	default:
 		// handles help argument also
