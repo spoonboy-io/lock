@@ -31,7 +31,7 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		fmt.Printf(handlers.Help(), version, goversion)
+		fmt.Printf(handlers.Help(), version, goversion, internal.DEFAULT_PROJECT_NAME)
 		os.Exit(0)
 	}
 
@@ -64,6 +64,6 @@ func main() {
 		fmt.Printf(projectInfo)
 	default:
 		// handles help argument also
-		fmt.Printf(handlers.Help(), version, goversion)
+		fmt.Printf(handlers.Help(), version, goversion, internal.DEFAULT_PROJECT_NAME)
 	}
 }

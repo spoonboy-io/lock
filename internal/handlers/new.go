@@ -2,27 +2,17 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/gitops"
 	"github.com/spoonboy-io/lock/internal/metadata"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 )
 
-/*
-new <template>      Creates a new plugin project from a starter template repository,
-template can be name or id. Specify flags for the template and to override the defaults:
---name        Specify a project folder name (default: morpheus-plugin)
---tag         Specify a tag to create project from (default: head)
-*/
-
-// NewProject handles the creation of a new plugin project folder cloned
-// from either head or a specfic git tag  of the template repository
+// NewProject handles the creation of a new starter plugin project cloned
+// from either head or a specific git tag of the template repository
 func NewProject(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
 
 	// set defaults
@@ -124,19 +114,15 @@ func NewProject(meta *metadata.Metadata, args []string, logger *koan.Logger) (st
 	}
 
 	// clone the repository into the directory
-	if _, err := git.PlainClone(projectName, false, &git.CloneOptions{
-		URL:           p.URL,
-		Progress:      nil,
-		ReferenceName: plumbing.ReferenceName(fullRef),
-	}); err != nil {
+	if err := gitops.CloneRepository(p.URL, projectName, fullRef); err != nil {
 		return "", err
 	}
 
-	// remove .git folder, so clean for new gitops project
-	gitFolder := filepath.Join(projectName, ".git")
-	if err := os.RemoveAll(gitFolder); err != nil {
+	// remove .git folder
+	if err := gitops.DeGit(projectName); err != nil {
 		return "", err
 	}
+
 	output := `
 New Plugin starter project successfully created
 -----------------------------------------------

@@ -5,6 +5,8 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/storage/memory"
+	"os"
+	"path/filepath"
 )
 
 // GetTags clones the git repository to memory and fetches all the available tags
@@ -41,4 +43,27 @@ func GetTags(repo string) ([]string, error) {
 	}
 
 	return tagList, nil
+}
+
+// CloneRepository clones repository into project folder and checks reference
+func CloneRepository(repo, projectName, ref string) error {
+	_, err := git.PlainClone(projectName, false, &git.CloneOptions{
+		URL:           repo,
+		Progress:      nil,
+		ReferenceName: plumbing.ReferenceName(ref),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeGit simply removes the .git folder so clean for new git init
+func DeGit(projectName string) error {
+	gitFolder := filepath.Join(projectName, ".git")
+	if err := os.RemoveAll(gitFolder); err != nil {
+		return err
+	}
+	return nil
 }

@@ -22,7 +22,7 @@ Supported command arguments and flags:
 
    new <template>      Creates a new plugin project from a starter template repository,
                        template can be name or id. Specify flags for the template and to override the defaults:
-                         --name        Specify a project folder name (default: morpheus-plugin)
+                         --name        Specify a project folder name (default: %s)
                          --tag         Specify a tag to create project from (default: head)
 `
 }
