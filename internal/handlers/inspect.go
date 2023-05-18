@@ -1,16 +1,14 @@
 package handlers
 
 import (
-	"errors"
 	"fmt"
 	"github.com/spoonboy-io/koan"
+	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/gitops"
 	"github.com/spoonboy-io/lock/internal/metadata"
 	"strconv"
 	"strings"
 )
-
-var ERR_NO_TEMPLATE = errors.New("template id or name not provided")
 
 // Inspect provides complete information about a template including the available tags
 func Inspect(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
@@ -33,7 +31,7 @@ Template Information
 
 	// check there is id/name argument
 	if len(args) < 2 {
-		return "", ERR_NO_TEMPLATE
+		return "", internal.ERR_NO_TEMPLATE
 	}
 	template = args[1]
 
@@ -122,12 +120,12 @@ Template Information
 		tagOutput = fmt.Sprintf(miscSyntax, miscTag)
 	}
 
-	// morheus versioning
+	// morpheus versioning
 	if p.Versioning.Morpheus {
 		tagOutput = fmt.Sprintf(morpSyntax, morpTag)
 	}
 
-	// release versionsing
+	// release versioning
 	if p.Versioning.Semantic {
 		tagOutput += fmt.Sprintf(relSyntax, releaseTag)
 	}

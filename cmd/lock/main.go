@@ -56,9 +56,12 @@ func main() {
 		fmt.Printf(tagInfo)
 	case "new":
 		// create a new project
-		if err := handlers.NewProject(args, logger); err != nil {
+		var projectInfo string
+		projectInfo, err := handlers.NewProject(&metadata, args, logger)
+		if err != nil {
 			logger.FatalError("problem creating new project", err)
 		}
+		fmt.Printf(projectInfo)
 	default:
 		// handles help argument also
 		fmt.Printf(handlers.Help(), version, goversion)
