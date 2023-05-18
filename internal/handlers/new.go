@@ -34,7 +34,7 @@ func NewProject(args []string, logger *koan.Logger) error {
 	// valid tag (if not default)
 	if reference != "" {
 		logger.Info("checking tag exists")
-		tags, err := gitops.ListTags()
+		tags, err := gitops.GetTags("")
 		if err != nil {
 			return err
 		}

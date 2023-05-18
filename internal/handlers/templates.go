@@ -111,7 +111,6 @@ func line(num int) string {
 	for i := 0; i < num; i++ {
 		l += "-"
 	}
-
 	return l
 }
 

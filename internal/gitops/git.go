@@ -5,11 +5,10 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/storage/memory"
-	"github.com/spoonboy-io/lock/internal"
 )
 
-// ListTags clones the git repository to memory and fetches all the available tags
-func ListTags() ([]string, error) {
+// GetTags clones the git repository to memory and fetches all the available tags
+func GetTags(repo string) ([]string, error) {
 	tagList := []string{}
 
 	// clone to memory
@@ -17,7 +16,7 @@ func ListTags() ([]string, error) {
 	storer := memory.NewStorage()
 
 	r, err := git.Clone(storer, fs, &git.CloneOptions{
-		URL: internal.PROJECT_URL,
+		URL: repo,
 	})
 	if err != nil {
 		return tagList, err
