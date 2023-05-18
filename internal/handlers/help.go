@@ -8,14 +8,14 @@ func Help() string {
  Version: %s, Go build: %s                    
 ---------------------------------------------------------
 
-Supported command arguments and flags:
+   Supported command arguments and flags:
 
    help                Prints this help section
 
    templates           Print out a list of starter project templates which are available to select
                        Specify a flag to filter by category:
                          --category    Specify the category as a filter
-                         --morpheus	   Specify the minimum version of Morpheus as a filter 
+                         --morpheus    Specify the minimum version of Morpheus as a filter 
 
    inspect <template>  Print the git tag references available to choose from for a project template
                        template can be name or id
@@ -24,5 +24,6 @@ Supported command arguments and flags:
                        template can be name or id. Specify flags for the template and to override the defaults:
                          --name        Specify a project folder name (default: %s)
                          --tag         Specify a tag to create project from (default: head)
+
 `
 }
