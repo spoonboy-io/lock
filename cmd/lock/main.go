@@ -47,7 +47,6 @@ func main() {
 			logger.FatalError("problem listing templates", err)
 		}
 		fmt.Printf(templateInfo)
-		os.Exit(0)
 	case "inspect":
 		// list metadata and fetch tags for template from remote
 		var tagInfo string
@@ -56,7 +55,6 @@ func main() {
 			logger.FatalError("problem listing repository tags", err)
 		}
 		fmt.Printf(tagInfo)
-		os.Exit(0)
 	case "new":
 		// create a new project
 		if err := handlers.NewProject(args, logger); err != nil {
@@ -65,6 +63,5 @@ func main() {
 	default:
 		// handles help argument also
 		fmt.Printf(help.Options(), version, goversion)
-		os.Exit(0)
 	}
 }
