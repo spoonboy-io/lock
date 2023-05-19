@@ -7,9 +7,11 @@ import (
 
 const (
 	METADATA_URL         = "https://raw.githubusercontent.com/spoonboy-io/lock-plugin-metadata/main/lock.yaml"
-	METADATA_CACHE       = ".lock_cache"
-	CACHE_TTL            = 5 * time.Minute
+	TEMPLATE_CACHE       = ".lockTemplateCache"
+	TEMPLATE_CACHE_TTL   = 5 * time.Minute
 	PLUGIN_JAR_INFO_URL  = "https://share.morpheusdata.com/feed"
+	PLUGIN_CACHE         = ".lockPluginCache"
+	PLUGIN_CACHE_TTL     = 5 * time.Minute
 	DEFAULT_PROJECT_NAME = "morpheus-plugin-project"
 )
 

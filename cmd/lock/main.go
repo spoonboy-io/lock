@@ -92,8 +92,9 @@ func main() {
 	case "version":
 		// handles version command
 		fmt.Printf(handlers.Version(), version, goversion, internal.METADATA_URL,
-			internal.METADATA_CACHE, (internal.CACHE_TTL/1000000000)/60, internal.PLUGIN_JAR_INFO_URL,
-			internal.DEFAULT_PROJECT_NAME)
+			internal.TEMPLATE_CACHE, (internal.TEMPLATE_CACHE_TTL/1000000000)/60,
+			internal.PLUGIN_JAR_INFO_URL, internal.PLUGIN_CACHE,
+			(internal.PLUGIN_CACHE_TTL/1000000000)/60, internal.DEFAULT_PROJECT_NAME)
 	default:
 		// handles help argument also
 		fmt.Printf(handlers.Help(), internal.DEFAULT_PROJECT_NAME)

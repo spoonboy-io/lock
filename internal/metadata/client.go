@@ -18,14 +18,14 @@ func GetMetadata(uri string, logger *koan.Logger) ([]byte, error) {
 	var data []byte
 
 	// check cached exist
-	if haveCached(internal.METADATA_CACHE, internal.CACHE_TTL) {
-		data, err := os.ReadFile(internal.METADATA_CACHE)
+	if haveCached(internal.TEMPLATE_CACHE, internal.TEMPLATE_CACHE_TTL) {
+		data, err := os.ReadFile(internal.TEMPLATE_CACHE)
 		if err != nil {
 			return nil, err
 		}
 		return data, nil
 	}
-	
+
 	client := http.Client{
 		Timeout: 5 * time.Second,
 	}
@@ -44,7 +44,7 @@ func GetMetadata(uri string, logger *koan.Logger) ([]byte, error) {
 	}
 
 	// create cache
-	if err := os.WriteFile(internal.METADATA_CACHE, data, 0700); err != nil {
+	if err := os.WriteFile(internal.TEMPLATE_CACHE, data, 0700); err != nil {
 		return nil, err
 	}
 

@@ -12,7 +12,9 @@ Data sources:
   Cache file: %s
   Cache TTL: %d mins
  Plugin data: 
-   URL: %s 
+  URL: %s
+  Cache file: %s
+  Cache TTL: %d mins
 Defaults:
  Project name: %s
 `
