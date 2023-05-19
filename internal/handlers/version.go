@@ -6,7 +6,7 @@ func Version() string {
 	return `Client:
  Version: %s
  Go version: %s
-Datasources: 	
+Data sources: 	
  Template data:
   URL: %s
   Cache file: %s
