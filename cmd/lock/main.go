@@ -38,7 +38,7 @@ func main() {
 	args := os.Args[1:]
 
 	switch args[0] {
-
+	// templates
 	case "templates":
 		// list all the templates
 		var templateInfo string
@@ -63,6 +63,32 @@ func main() {
 			logger.FatalError("problem creating new project", err)
 		}
 		fmt.Printf(projectInfo)
+	// jars
+	case "plugins":
+		// list available plugins
+		var pluginsInfo string
+		pluginsInfo, err := handlers.ListPlugins() //(&metadata, args, logger)
+		if err != nil {
+			logger.FatalError("problem listing plugins", err)
+		}
+		fmt.Printf(pluginsInfo)
+	case "plugin":
+		// view plugin info and version/morpheus reqs
+		var pluginInfo string
+		pluginInfo, err := handlers.ListPluginVersions() //(&metadata, args, logger)
+		if err != nil {
+			logger.FatalError("problem listing plugin versions", err)
+		}
+		fmt.Printf(pluginInfo)
+	case "load":
+		// download a plugin jar
+		var downloadInfo string
+		downloadInfo, err := handlers.DownloadPluginVersion() //(&metadata, args, logger)
+		if err != nil {
+			logger.FatalError("problem downloading plugin", err)
+		}
+		fmt.Printf(downloadInfo)
+	// general
 	case "version":
 		// handles version command
 		fmt.Printf(handlers.Version(), version, goversion, internal.METADATA_URL,
