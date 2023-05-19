@@ -2,28 +2,30 @@ package handlers
 
 // Options returns a multistring for display on help argument or any unrecognised argument
 func Help() string {
-	return ` 
----------------------------------------------------------                                            
- LOCK - CLI helper tool for Morpheus plugin development
- Version: %s, Go build: %s                    
----------------------------------------------------------
+	return `
+Usage: lock COMMAND <ARGUMENT> --FLAG(S)
 
-   Supported command arguments and flags:
+A CLI helper tool for Morpheus plugin development and download
 
-   help                Prints this help section
+General commands:	
+  help                   Show this help section
+  version                Show the Lock version information
 
-   templates           Print out a list of starter project templates which are available to select
-                       Specify a flag to filter by category:
-                         --category    Specify the category as a filter
-                         --morpheus    Specify the minimum version of Morpheus as a filter 
+Starter templates:
+  templates              List available starter project templates.
+                          --category    The category as a filter
+                          --morpheus    The minimum version of Morpheus as a filter
+  template <TEMPLATE>    Show template information and available versions, <TEMPLATE> can be name or id.
+  new <TEMPLATE>         Creates new project from a starter template, <TEMPLATE> can be name or id.
+                          --name        A project folder name (default: %s)
+                          --tag         The specific tag to create project from (default: head)
 
-   inspect <template>  Print the git tag references available to choose from for a project template
-                       template can be name or id
-
-   new <template>      Creates a new plugin project from a starter template repository,
-                       template can be name or id. Specify flags for the template and to override the defaults:
-                         --name        Specify a project folder name (default: %s)
-                         --tag         Specify a tag to create project from (default: head)
+Precompiled plugins:
+  plugins                List available Morpheus plugin JAR files.
+                          --morpheus    The minimum version of Morpheus as a filter
+  plugin <PLUGIN>        Show plugin information and Morpheus version compatibility, <PLUGIN> can be name or id.
+  load <PLUGIN>          Download a compiled plugin, <PLUGIN> can be name or id.
+                          --version     The specific version of the plugin (default: latest)
 
 `
 }

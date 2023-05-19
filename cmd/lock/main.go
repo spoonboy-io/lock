@@ -31,13 +31,14 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		fmt.Printf(handlers.Help(), version, goversion, internal.DEFAULT_PROJECT_NAME)
+		fmt.Printf(handlers.Help(), internal.DEFAULT_PROJECT_NAME)
 		os.Exit(0)
 	}
 
 	args := os.Args[1:]
 
 	switch args[0] {
+
 	case "templates":
 		// list all the templates
 		var templateInfo string
@@ -62,8 +63,13 @@ func main() {
 			logger.FatalError("problem creating new project", err)
 		}
 		fmt.Printf(projectInfo)
+	case "version":
+		// handles version command
+		fmt.Printf(handlers.Version(), version, goversion, internal.METADATA_URL,
+			internal.METADATA_CACHE, (internal.CACHE_TTL/1000000000)/60, internal.PLUGIN_JAR_INFO_URL,
+			internal.DEFAULT_PROJECT_NAME)
 	default:
 		// handles help argument also
-		fmt.Printf(handlers.Help(), version, goversion, internal.DEFAULT_PROJECT_NAME)
+		fmt.Printf(handlers.Help(), internal.DEFAULT_PROJECT_NAME)
 	}
 }
