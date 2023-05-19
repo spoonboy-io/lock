@@ -20,12 +20,19 @@ func main() {
 	logger = &koan.Logger{}
 
 	// get metadata
-	raw, err := metadata.GetMetadata(internal.METADATA_URL, logger)
+	rawYAML, err := metadata.GetMetadata(internal.METADATA_URL, internal.TEMPLATE_CACHE, internal.TEMPLATE_CACHE_TTL, logger)
 	if err != nil {
-		logger.FatalError("problem retrieving metadata", err)
+		logger.FatalError("problem retrieving YAML metadata", err)
 	}
 
-	metadata, err := metadata.ParseMetadataYAML(raw, logger)
+	rawRSS, err := metadata.GetMetadata(internal.PLUGIN_JAR_INFO_URL, internal.PLUGIN_CACHE, internal.PLUGIN_CACHE_TTL, logger)
+	if err != nil {
+		logger.FatalError("problem retrieving YAML metadata", err)
+	}
+
+	_ = rawRSS
+
+	metadata, err := metadata.ParseMetadataYAML(rawYAML, logger)
 	if err != nil {
 		logger.FatalError("problem parsing metadata", err)
 	}

@@ -2,13 +2,15 @@ package metadata
 
 import (
 	"github.com/spoonboy-io/koan"
-	"github.com/spoonboy-io/lock/internal"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
 )
+
+var testCache = ".testCache"
+var testTTL = 1 * time.Minute
 
 func createTestServer(data string, status int) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +52,7 @@ func TestGetMetadata(t *testing.T) {
 			// create test server
 			testServer := createTestServer(tc.serverResponse, tc.serverStatus)
 
-			gotData, gotErr := GetMetadata(testServer.URL, logger)
+			gotData, gotErr := GetMetadata(testServer.URL, testCache, testTTL, logger)
 			if gotErr != tc.wantErr {
 				t.Errorf("wanted '%v' got '%v'", tc.wantErr, gotErr)
 			}
@@ -63,7 +65,7 @@ func TestGetMetadata(t *testing.T) {
 		})
 	}
 
-	if err := os.Remove(internal.METADATA_CACHE); err != nil {
+	if err := os.Remove(testCache); err != nil {
 		t.Fatalf("something went wrong: %v", err)
 	}
 }
@@ -85,7 +87,7 @@ func TestGetMetadataBadResponse(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// create test server
 			testServer := createTestServer("", tc.serverStatus)
-			_, gotErr := GetMetadata(testServer.URL, logger)
+			_, gotErr := GetMetadata(testServer.URL, testCache, testTTL, logger)
 			if gotErr == nil {
 				t.Errorf("wanted error but got nil")
 			}
@@ -131,11 +133,11 @@ func TestHaveCached(t *testing.T) {
 
 			if tc.createCache {
 				// create cache file
-				if err := os.WriteFile(internal.METADATA_CACHE, []byte("test data"), 0700); err != nil {
+				if err := os.WriteFile(testCache, []byte("test data"), 0700); err != nil {
 					t.Fatalf("something went wrong: %v", err)
 				}
 				defer func() {
-					if err := os.Remove(internal.METADATA_CACHE); err != nil {
+					if err := os.Remove(testCache); err != nil {
 						t.Fatalf("something went wrong: %v", err)
 					}
 				}()
@@ -143,7 +145,7 @@ func TestHaveCached(t *testing.T) {
 
 			time.Sleep(tc.delay) // allow the cache file to hit TTL
 
-			got := haveCached(internal.METADATA_CACHE, tc.TTL)
+			got := haveCached(testCache, tc.TTL)
 			if got != tc.want {
 				t.Errorf("wanted '%v' got '%v'", tc.want, got)
 			}

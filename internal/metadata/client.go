@@ -3,7 +3,6 @@ package metadata
 import (
 	"fmt"
 	"github.com/spoonboy-io/koan"
-	"github.com/spoonboy-io/lock/internal"
 	"io"
 	"net/http"
 	"os"
@@ -11,15 +10,14 @@ import (
 )
 
 // GetMetadata wraps a http request to obtain metadata from the
-// github repository in which it is maintained, or from a local cache
-// since this is a CLI we don't want to make the same HTTP request on
-// every invocation so we cache the data with a TTL
-func GetMetadata(uri string, logger *koan.Logger) ([]byte, error) {
+// or from a local cache, since this is a CLI we don't want to make
+// the same HTTP request on every invocation so we cache the data with a TTL
+func GetMetadata(remoteUri, cache string, cacheTTL time.Duration, logger *koan.Logger) ([]byte, error) {
 	var data []byte
 
 	// check cached exist
-	if haveCached(internal.TEMPLATE_CACHE, internal.TEMPLATE_CACHE_TTL) {
-		data, err := os.ReadFile(internal.TEMPLATE_CACHE)
+	if haveCached(cache, cacheTTL) {
+		data, err := os.ReadFile(cache)
 		if err != nil {
 			return nil, err
 		}
@@ -29,7 +27,7 @@ func GetMetadata(uri string, logger *koan.Logger) ([]byte, error) {
 	client := http.Client{
 		Timeout: 5 * time.Second,
 	}
-	res, err := client.Get(uri)
+	res, err := client.Get(remoteUri)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +42,7 @@ func GetMetadata(uri string, logger *koan.Logger) ([]byte, error) {
 	}
 
 	// create cache
-	if err := os.WriteFile(internal.TEMPLATE_CACHE, data, 0700); err != nil {
+	if err := os.WriteFile(cache, data, 0700); err != nil {
 		return nil, err
 	}
 
