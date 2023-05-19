@@ -30,12 +30,17 @@ func main() {
 		logger.FatalError("problem retrieving YAML metadata", err)
 	}
 
-	_ = rawRSS
-
-	metadata, err := metadata.ParseMetadataYAML(rawYAML, logger)
+	templateMetadata, err := metadata.ParseMetadataYAML(rawYAML, logger)
 	if err != nil {
-		logger.FatalError("problem parsing metadata", err)
+		logger.FatalError("problem parsing template metadata", err)
 	}
+
+	pluginMetadata, err := metadata.ParseMetadataXML(rawRSS, logger)
+	if err != nil {
+		logger.FatalError("problem parsing plugin metadata", err)
+	}
+
+	_ = pluginMetadata
 
 	if len(os.Args) < 2 {
 		fmt.Printf(handlers.Help(), internal.DEFAULT_PROJECT_NAME)
@@ -49,7 +54,7 @@ func main() {
 	case "templates":
 		// list all the templates
 		var templateInfo string
-		templateInfo, err := handlers.ListTemplates(&metadata, args, logger)
+		templateInfo, err := handlers.ListTemplates(&templateMetadata, args, logger)
 		if err != nil {
 			logger.FatalError("problem listing templates", err)
 		}
@@ -57,7 +62,7 @@ func main() {
 	case "template":
 		// view template metadata and fetch tags for template from remote
 		var tagInfo string
-		tagInfo, err := handlers.ViewTemplate(&metadata, args, logger)
+		tagInfo, err := handlers.ViewTemplate(&templateMetadata, args, logger)
 		if err != nil {
 			logger.FatalError("problem listing repository tags", err)
 		}
@@ -65,7 +70,7 @@ func main() {
 	case "pick":
 		// create a new project
 		var projectInfo string
-		projectInfo, err := handlers.NewProject(&metadata, args, logger)
+		projectInfo, err := handlers.NewProject(&templateMetadata, args, logger)
 		if err != nil {
 			logger.FatalError("problem creating new project", err)
 		}
