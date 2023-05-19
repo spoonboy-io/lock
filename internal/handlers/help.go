@@ -16,7 +16,7 @@ Starter templates:
                           --category    The category as a filter
                           --morpheus    The minimum version of Morpheus as a filter
   template <TEMPLATE>    Show template information and available versions, <TEMPLATE> can be name or id.
-  new <TEMPLATE>         Creates new project from a starter template, <TEMPLATE> can be name or id.
+  pick <TEMPLATE>        Creates new project from a starter template, <TEMPLATE> can be name or id.
                           --name        A project folder name (default: %s)
                           --tag         The specific tag to create project from (default: head)
 

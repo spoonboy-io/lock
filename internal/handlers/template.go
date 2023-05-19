@@ -10,20 +10,17 @@ import (
 	"strings"
 )
 
-// Inspect provides complete information about a template including the available tags
-func Inspect(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
+// ViewTemplate provides complete information about a template including the available tags
+func ViewTemplate(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
 	tagInfo := ""
-	output := `
-Template Information
---------------------
-- ID: %d
-- Name: %s
-- Description: %s
-- Category: %s
-- Minimum Morpheus: %s
-- Tags: %s
-- Repository: %s
-
+	output := `Template information:
+  ID: %d
+  Name: %s
+  Description: %s
+  Category: %s
+  Minimum Morpheus: %s
+  Tags: %s
+  Repository: %s
 %s
 `
 	var template string
@@ -75,44 +72,38 @@ Template Information
 				// collect the morpheus tested tags
 				// strip the version prefix
 				v = strings.TrimPrefix(v, p.Versioning.MorpheusPrefix)
-				morpTag += fmt.Sprintf("- %s\n", v)
+				morpTag += fmt.Sprintf("  %s\n", v)
 			}
 		}
 
 		if !p.Versioning.Semantic && !p.Versioning.Morpheus {
 			// just collect the tags
-			miscTag += fmt.Sprintf("- %s\n", v)
+			miscTag += fmt.Sprintf("  %s\n", v)
 		}
 	}
 
 	// handle empty despite versioning flags true
 	if releaseTag == "" {
-		releaseTag = "- No release tags found.\n"
+		releaseTag = "  No release tags found.\n"
 	}
 
 	if morpTag == "" {
-		morpTag = "- No Morpheus version tested tags found.\n"
+		morpTag = "  No Morpheus version tested tags found.\n"
 	}
 
 	if miscTag == "" {
-		miscTag = "- No tags found.\n"
+		miscTag = "  No tags found.\n"
 	}
 
 	// some mini templates to build output
-	morpSyntax := `Morpheus version tested tags
-----------------------------
-%s
-`
+	morpSyntax := `Morpheus version tested tags:
+%s`
 
-	relSyntax := `Release tags
-------------
-%s
-`
+	relSyntax := `Release tags:
+%s`
 
-	miscSyntax := `Tags
-----
-%s
-`
+	miscSyntax := `Tags:
+%s`
 	// what should output
 	tagOutput := ""
 	// no versioning just so tags

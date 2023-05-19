@@ -123,12 +123,10 @@ func NewProject(meta *metadata.Metadata, args []string, logger *koan.Logger) (st
 		return "", err
 	}
 
-	output := `
-New Plugin starter project successfully created
------------------------------------------------
-Created in folder: '%s'
-Using plugin template: '%s'
-Using tag/reference: '%s'.
+	output := `Morpheus plugin starter project created:
+  Created in folder: %s
+  Using plugin template: %s
+  Using tag/reference: %s
 
 `
 	if reference == "" {

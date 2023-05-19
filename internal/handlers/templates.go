@@ -110,7 +110,7 @@ func ListTemplates(meta *metadata.Metadata, args []string, logger *koan.Logger) 
 		header2 = fmt.Sprintf(rowString, idU, nameU, catU, descU, minU, tagU)
 	}
 
-	output = fmt.Sprintf("\n%s%s%s", header1, header2, output)
+	output = fmt.Sprintf("%s%s%s", header1, header2, output)
 	fmt.Println(output)
 	return "", nil
 }
@@ -145,11 +145,8 @@ func title(key string, num int) string {
 }
 
 func padder(key string, num int) string {
-
 	for i := len(key); i < num; i++ {
 		key += " "
 	}
 	return key
 }
-
-func calcMax() {}

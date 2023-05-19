@@ -47,15 +47,15 @@ func main() {
 			logger.FatalError("problem listing templates", err)
 		}
 		fmt.Printf(templateInfo)
-	case "inspect":
-		// list metadata and fetch tags for template from remote
+	case "template":
+		// view template metadata and fetch tags for template from remote
 		var tagInfo string
-		tagInfo, err := handlers.Inspect(&metadata, args, logger)
+		tagInfo, err := handlers.ViewTemplate(&metadata, args, logger)
 		if err != nil {
 			logger.FatalError("problem listing repository tags", err)
 		}
 		fmt.Printf(tagInfo)
-	case "new":
+	case "pick":
 		// create a new project
 		var projectInfo string
 		projectInfo, err := handlers.NewProject(&metadata, args, logger)
