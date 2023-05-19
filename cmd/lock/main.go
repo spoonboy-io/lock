@@ -54,7 +54,7 @@ func main() {
 	case "templates":
 		// list all the templates
 		var templateInfo string
-		templateInfo, err := handlers.ListTemplates(&templateMetadata, args, logger)
+		templateInfo, err := handlers.ListTemplates(&templateMetadata, args)
 		if err != nil {
 			logger.FatalError("problem listing templates", err)
 		}
@@ -62,7 +62,7 @@ func main() {
 	case "template":
 		// view template metadata and fetch tags for template from remote
 		var tagInfo string
-		tagInfo, err := handlers.ViewTemplate(&templateMetadata, args, logger)
+		tagInfo, err := handlers.ViewTemplate(&templateMetadata, args)
 		if err != nil {
 			logger.FatalError("problem listing repository tags", err)
 		}
@@ -70,7 +70,7 @@ func main() {
 	case "pick":
 		// create a new project
 		var projectInfo string
-		projectInfo, err := handlers.NewProject(&templateMetadata, args, logger)
+		projectInfo, err := handlers.NewProject(&templateMetadata, args)
 		if err != nil {
 			logger.FatalError("problem creating new project", err)
 		}
@@ -79,7 +79,7 @@ func main() {
 	case "plugins":
 		// list available plugins
 		var pluginsInfo string
-		pluginsInfo, err := handlers.ListPlugins() //(&metadata, args, logger)
+		pluginsInfo, err := handlers.ListPlugins(&pluginMetadata, args)
 		if err != nil {
 			logger.FatalError("problem listing plugins", err)
 		}
@@ -87,7 +87,7 @@ func main() {
 	case "plugin":
 		// view plugin info and version/morpheus reqs
 		var pluginInfo string
-		pluginInfo, err := handlers.ListPluginVersions() //(&metadata, args, logger)
+		pluginInfo, err := handlers.ListPluginVersions(&pluginMetadata, args)
 		if err != nil {
 			logger.FatalError("problem listing plugin versions", err)
 		}
@@ -95,7 +95,7 @@ func main() {
 	case "load":
 		// download a plugin jar
 		var downloadInfo string
-		downloadInfo, err := handlers.DownloadPluginVersion() //(&metadata, args, logger)
+		downloadInfo, err := handlers.DownloadPluginVersion(&pluginMetadata, args)
 		if err != nil {
 			logger.FatalError("problem downloading plugin", err)
 		}

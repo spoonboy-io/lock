@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/gitops"
 	"github.com/spoonboy-io/lock/internal/metadata"
@@ -13,7 +12,7 @@ import (
 
 // NewProject handles the creation of a new starter plugin project cloned
 // from either head or a specific git tag of the template repository
-func NewProject(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
+func NewProject(meta *metadata.Metadata, args []string) (string, error) {
 
 	// set defaults
 	projectName := internal.DEFAULT_PROJECT_NAME

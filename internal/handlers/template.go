@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/spoonboy-io/koan"
 	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/gitops"
 	"github.com/spoonboy-io/lock/internal/metadata"
@@ -11,7 +10,7 @@ import (
 )
 
 // ViewTemplate provides complete information about a template including the available tags
-func ViewTemplate(meta *metadata.Metadata, args []string, logger *koan.Logger) (string, error) {
+func ViewTemplate(meta *metadata.Metadata, args []string) (string, error) {
 	tagInfo := ""
 	output := `Template information:
   ID: %d

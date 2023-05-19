@@ -1,6 +1,6 @@
 # Lock
 
-## A CLI helper tool for Morpheus plugin development
+## A CLI helper tool for Morpheus plugin development and download
 
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/spoonboy-io/lock?style=flat-square)](https://go.dev/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/spoonboy-io/lock?style=flat-square)](https://goreportcard.com/report/github.com/spoonboy-io/lock)
