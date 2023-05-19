@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/spoonboy-io/lock/internal"
 	"github.com/spoonboy-io/lock/internal/metadata"
 	"strings"
 )
@@ -68,6 +69,12 @@ func ListTemplates(meta *metadata.Metadata, args []string) (string, error) {
 	// now we know our string lengths, we can assemble the output
 	var output string
 	var rowCount int
+
+	// aliases
+	var padder = internal.WriteCell
+	var title = internal.WriteTitle
+	var line = internal.Writeline
+
 	for i, p := range *meta {
 		// check filters
 		if filterCat != "" && p.Category != filterCat {
@@ -124,28 +131,4 @@ func cutString(data string, cutAt int) string {
 		short = fmt.Sprintf("%s..", string(d[0:cutAt]))
 	}
 	return short
-}
-
-func line(num int) string {
-	l := ""
-	for i := 0; i < num; i++ {
-		l += "-"
-	}
-	return l
-}
-
-func title(key string, num int) string {
-	t := key
-	c := num - len(t)
-	for i := 0; i < c; i++ {
-		t += " "
-	}
-	return t
-}
-
-func padder(key string, num int) string {
-	for i := len(key); i < num; i++ {
-		key += " "
-	}
-	return key
 }
