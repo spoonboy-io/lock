@@ -7,9 +7,9 @@ import (
 	"strconv"
 )
 
+// ListPluginVersions returns formatted output containing plugin info including version history
 func ListPluginVersions(meta *metadata.RssMetadata, args []string) (string, error) {
 
-	//tagInfo := ""
 	output := `Plugin information:
   ID: %d
   Name: %s
@@ -51,14 +51,11 @@ Version History (with min Morpheus):
 	verTemplate := "  %s (> %s), published %s\n"
 	verOutput := ""
 
-	// we wantt latest first
+	// we want latest first
 	for i := len(semVer) - 1; i >= 0; i-- {
 		verOutput += fmt.Sprintf(verTemplate, semVer[i], morphVer[i], pubDate[i])
 	}
 
-	//for i := range semVer {
-	//	verOutput += fmt.Sprintf(verTemplate, semVer[i], morphVer[i], pubDate[i])
-	//}
 	output = fmt.Sprintf(output, id, p.Code, p.Description, p.FileLink, semVer[len(semVer)-1:][0], morphVer[len(morphVer)-1:][0], verOutput)
 
 	return output, nil

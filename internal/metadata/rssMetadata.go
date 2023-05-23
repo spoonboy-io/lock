@@ -12,8 +12,7 @@ type RssMetadata struct {
 	Channel Channel  `xml:"channel"`
 }
 
-// Channel captures RSS channel info it is not of much
-// interest to us but included for completeness
+// Channel captures RSS channel info it is not of much interest to us but included for completeness
 type Channel struct {
 	Title       string `xml:"title"`
 	Link        string `xml:"link"`
@@ -23,11 +22,8 @@ type Channel struct {
 	Items       []Item `xml:"item"`
 }
 
-// Item represents a single <item></item> element from
-// the feed, again we capture it all for completeness
-// TODO are there more properties which could be included
-// in he feed, such as repository, provider type, and tags, because that
-// would mean we can use as a target for templates
+// Item represents a single <item></item> element from the feed, again we capture it all for completeness
+// TODO are there more properties which could be included in he feed, such as repository, provider type, and tags
 type Item struct {
 	Name                string `xml:"name"`
 	Code                string `xml:"code"`

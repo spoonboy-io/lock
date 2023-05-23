@@ -1,6 +1,6 @@
 package handlers
 
-// Options returns a multistring for display on help argument or any unrecognised argument
+// Help returns a multirow string for display on help argument or any unrecognised argument
 func Help() string {
 	return `
 Usage: lock COMMAND <ARGUMENT> --FLAG(S)

@@ -55,9 +55,8 @@ var category = [9]string{
 
 var ERR_UNMARSHALLING = errors.New("could not unmarshal the YAML")
 
-// ParseMetadataYAML parses the YAML metadata to the Metadata type
-// then sets defaults on string types which would otherwise be default
-// empty, we also check the category is one of those allowed
+// ParseMetadataYAML parses the YAML metadata to the Metadata type then sets defaults on string
+// types which would otherwise be default empty, we also check the category is one of those allowed
 func ParseMetadataYAML(data []byte, logger *koan.Logger) (Metadata, error) {
 	var temp, meta Metadata
 

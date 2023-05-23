@@ -7,8 +7,7 @@ import (
 	"strings"
 )
 
-// ListTemplates will process metadata and provide output
-// related to the available starter repositories
+// ListTemplates will process metadata and provide output related to the available starter repositories
 func ListTemplates(meta *metadata.Metadata, args []string) (string, error) {
 	// handle optional flags --category and --morpheus
 	var filterCat, filterMorph string

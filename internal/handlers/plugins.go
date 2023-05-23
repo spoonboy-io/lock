@@ -7,21 +7,20 @@ import (
 	"strings"
 )
 
-// ListPlugins will process metadata and provide output
-// related to the available starter plugin jar versions
+// ListPlugins will process metadata and provide output related to the available starter plugin jar versions
 func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
-	// handle optional flag --morpheus
-	var filterMorph string
 
+	var filterMorph string
 	var rowString = "%s  %s  %s  %s  %s  %s\n"
 
+	// handle optional flag --morpheus
 	for _, v := range args[1:] {
 		if strings.HasPrefix(v, "--morpheus=") {
 			filterMorph = strings.TrimPrefix(v, "--morpheus=")
 		}
 	}
 
-	_ = filterMorph
+	_ = filterMorph //TODO we don't have filters
 
 	var output string
 	var rowCount int
@@ -79,23 +78,15 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	var title = internal.WriteTitle
 	var line = internal.Writeline
 
-	// version pass
-
 	// data pass
 	for _, p := range meta.Channel.Items {
 		id := fmt.Sprintf("%d.", rowCount+1)
 		if p.Code != lastCode {
 			semVer, morphVer := getVersions(meta, p.Code)
 			output += fmt.Sprintf(rowString, padder(id, maxId), padder(p.Code, maxCode), padder(p.Description, maxDesc), padder(semVer[len(semVer)-1:][0], maxLatestVer), padder("> "+morphVer[len(morphVer)-1:][0], 12), padder(fmt.Sprintf(" %d", len(semVer)), maxVersions))
-			// reset
-			//semVer = []string{}
-			//morphVer = []string{}
 			rowCount++
 		}
 
-		// append to the version slices
-		//semVer = append(semVer, p.Version)
-		//morphVer = append(morphVer, p.MinApplianceVersion)
 		lastCode = p.Code
 	}
 
@@ -127,6 +118,7 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	}
 
 	output = fmt.Sprintf("%s%s%s\n", header1, header2, output)
+
 	return output, nil
 }
 

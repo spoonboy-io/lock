@@ -12,8 +12,7 @@ var (
 	ERR_PLUGIN_NAME_NOT_FOUND = errors.New("no plugin with that name found")
 )
 
-// GetTemplateByName will iterate the metadata to retrieve by name key
-// we also return the index as useful
+// GetTemplateByName will iterate the metadata to retrieve by name key we also return the index as useful
 func (md *Metadata) GetTemplateByName(key string) (Plugin, int, error) {
 	id := 0
 	for _, p := range *md {
@@ -35,8 +34,7 @@ func (md *Metadata) GetTemplateByIndex(id int) (Plugin, error) {
 	return Plugin{}, ERR_TEMPLATE_ID_NOT_FOUND
 }
 
-// GetPluginByName will iterate the rss metadata to retrieve by name key
-// we also return the index as useful
+// GetPluginByName will iterate the rss metadata to retrieve by name key we also return the index as useful
 // TODO five return values because it evolved, need to refactor
 func (md *RssMetadata) GetPluginByName(key string) (Item, int, []string, []string, []string, error) {
 	rowCount := 0

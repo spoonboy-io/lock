@@ -9,9 +9,8 @@ import (
 	"time"
 )
 
-// GetMetadata wraps a http request to obtain metadata from the
-// or from a local cache, since this is a CLI we don't want to make
-// the same HTTP request on every invocation so we cache the data with a TTL
+// GetMetadata wraps a http request to obtain metadata from the or from a local cache, since this
+// is a CLI we don't want to make the same HTTP request on every invocation so we cache the data with a TTL
 func GetMetadata(remoteUri, cache string, cacheTTL time.Duration, logger *koan.Logger) ([]byte, error) {
 	var data []byte
 

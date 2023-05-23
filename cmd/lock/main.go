@@ -40,8 +40,6 @@ func main() {
 		logger.FatalError("problem parsing plugin metadata", err)
 	}
 
-	_ = pluginMetadata
-
 	if len(os.Args) < 2 {
 		fmt.Printf(handlers.Help(), internal.DEFAULT_PROJECT_NAME)
 		os.Exit(0)
