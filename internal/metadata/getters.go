@@ -1,15 +1,20 @@
 package metadata
 
-import "errors"
-
-var (
-	ERR_ID_NOT_FOUND   = errors.New("no template with that id found")
-	ERR_NAME_NOT_FOUND = errors.New("no template with that name found")
+import (
+	"errors"
 )
 
-// GetByName will iterate the metadata to retrieve by name key
+var (
+	ERR_TEMPLATE_ID_NOT_FOUND   = errors.New("no template with that id found")
+	ERR_TEMPLATE_NAME_NOT_FOUND = errors.New("no template with that name found")
+
+	ERR_PLUGIN_ID_NOT_FOUND   = errors.New("no plugin with that id found")
+	ERR_PLUGIN_NAME_NOT_FOUND = errors.New("no plugin with that name found")
+)
+
+// GetTemplateByName will iterate the metadata to retrieve by name key
 // we also return the index as useful
-func (md *Metadata) GetByName(key string) (Plugin, int, error) {
+func (md *Metadata) GetTemplateByName(key string) (Plugin, int, error) {
 	id := 0
 	for _, p := range *md {
 		id++
@@ -17,15 +22,63 @@ func (md *Metadata) GetByName(key string) (Plugin, int, error) {
 			return p.Plugin, id, nil
 		}
 	}
-	return Plugin{}, id, ERR_NAME_NOT_FOUND
+	return Plugin{}, id, ERR_TEMPLATE_NAME_NOT_FOUND
 }
 
-// GetByIndex will iterate the metadata to retrieve by index
-func (md *Metadata) GetByIndex(id int) (Plugin, error) {
+// GetTemplateByIndex will iterate the metadata to retrieve by index
+func (md *Metadata) GetTemplateByIndex(id int) (Plugin, error) {
 	for i, p := range *md {
 		if id == i+1 {
 			return p.Plugin, nil
 		}
 	}
+	return Plugin{}, ERR_TEMPLATE_ID_NOT_FOUND
+}
+
+// GetPluginByName will iterate the rss metadata to retrieve by name key
+// we also return the index as useful
+// TODO five return values because it evolved, need to refactor
+func (md *RssMetadata) GetPluginByName(key string) (Item, int, []string, []string, []string, error) {
+	rowCount := 0
+	lastCode := ""
+
+	for _, p := range md.Channel.Items {
+		if p.Code != lastCode {
+			rowCount++
+		}
+
+		if p.Code == key {
+			semVar, morphVar, pubDate := getPluginVersions(md, p.Code)
+			return p, rowCount, semVar, morphVar, pubDate, nil
+		}
+
+		lastCode = p.Code
+	}
+
+	return Item{}, rowCount, []string{}, []string{}, []string{}, ERR_PLUGIN_NAME_NOT_FOUND
+}
+
+/*
+// GetPluginByIndex will iterate the rss metadata to retrieve by index
+func (md *RssMetadata) GetPluginByIndex(id int) (Plugin, error) {
+	for i, p := range md.Channel.Items {
+		if id == i+1 {
+			return p.Plugin, nil
+		}
+	}
 	return Plugin{}, ERR_ID_NOT_FOUND
+}*/
+
+// helper to iterate the rss meta again and collect versions
+// TODO bit messy with three returns
+func getPluginVersions(meta *RssMetadata, code string) ([]string, []string, []string) {
+	var semVer, morphVer, pubDate []string
+	for _, p := range meta.Channel.Items {
+		if p.Code == code {
+			semVer = append(semVer, p.Version)
+			morphVer = append(morphVer, p.MinApplianceVersion)
+			pubDate = append(pubDate, p.PubDate)
+		}
+	}
+	return semVer, morphVer, pubDate
 }

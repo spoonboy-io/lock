@@ -19,6 +19,8 @@ const (
 var (
 	ERR_NO_TEMPLATE = errors.New("template id or name not provided")
 	ERR_INVALID_TAG = errors.New("requested tag could not be found on remote")
+
+	ERR_NO_PLUGIN = errors.New("plugin id or name not provided")
 )
 
 // CutString will cut and suffix a string at specified length

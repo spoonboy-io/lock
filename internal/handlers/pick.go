@@ -46,13 +46,13 @@ func NewProject(meta *metadata.Metadata, args []string) (string, error) {
 	id, err := strconv.Atoi(template)
 	if err != nil {
 		// text, can't convert
-		p, id, err = meta.GetByName(template)
+		p, id, err = meta.GetTemplateByName(template)
 		if err != nil {
 			return "", err
 		}
 	} else {
 		// id, converts
-		p, err = meta.GetByIndex(id)
+		p, err = meta.GetTemplateByIndex(id)
 		if err != nil {
 			return "", err
 		}
