@@ -77,23 +77,23 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	var title = internal.WriteTitle
 	var line = internal.Writeline
 
+	// version pass
+
 	// data pass
 	for _, p := range meta.Channel.Items {
 		id := fmt.Sprintf("%d.", rowCount+1)
 		if p.Code != lastCode {
-			if rowCount != 0 {
-
-			}
+			semVer, morphVer := getVersions(meta, p.Code)
 			output += fmt.Sprintf(rowString, padder(id, maxId), padder(p.Code, maxCode), padder(p.Description, maxDesc), padder(semVer[len(semVer)-1:][0], maxLatestVer), padder(morphVer[len(morphVer)-1:][0], maxLatestMorph))
 			// reset
-			semVer = []string{}
-			morphVer = []string{}
+			//semVer = []string{}
+			//morphVer = []string{}
 			rowCount++
 		}
 
 		// append to the version slices
-		semVer = append(semVer, p.Version)
-		morphVer = append(morphVer, p.MinApplianceVersion)
+		//semVer = append(semVer, p.Version)
+		//morphVer = append(morphVer, p.MinApplianceVersion)
 		lastCode = p.Code
 	}
 
@@ -106,10 +106,10 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	descU := line(maxDesc)
 	minH := title("LATEST", maxLatestVer)
 	minU := line(maxLatestVer)
-	if maxLatestMorph < 8 {
-		maxLatestMorph = 8
+	if maxLatestMorph < 12 {
+		maxLatestMorph = 12
 	}
-	tagH := title("MORPHEUS", maxLatestMorph)
+	tagH := title("MIN.MORPHEUS", maxLatestMorph)
 	tagU := line(maxLatestMorph)
 
 	header1 := ""
@@ -123,4 +123,16 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 
 	output = fmt.Sprintf("%s%s%s\n", header1, header2, output)
 	return output, nil
+}
+
+// helper to iterate the meta again and collect versions
+func getVersions(meta *metadata.RssMetadata, code string) ([]string, []string) {
+	var semVer, morphVer []string
+	for _, p := range meta.Channel.Items {
+		if p.Code == code {
+			semVer = append(semVer, p.Version)
+			morphVer = append(morphVer, p.MinApplianceVersion)
+		}
+	}
+	return semVer, morphVer
 }
