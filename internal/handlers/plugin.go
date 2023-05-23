@@ -35,13 +35,13 @@ Version History (with min Morpheus):
 	id, err := strconv.Atoi(plugin)
 	if err != nil {
 		// text, can't convert
-		p, id, semVer, morphVer, pubDate, err = meta.GetPluginByName(plugin)
+		p, id, semVer, morphVer, pubDate, _, err = meta.GetPluginByName(plugin)
 		if err != nil {
 			return "", err
 		}
 	} else {
 		// id, converts
-		p, semVer, morphVer, pubDate, err = meta.GetPluginByIndex(id)
+		p, semVer, morphVer, pubDate, _, err = meta.GetPluginByIndex(id)
 		if err != nil {
 			return "", err
 		}

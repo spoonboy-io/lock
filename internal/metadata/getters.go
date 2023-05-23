@@ -36,7 +36,7 @@ func (md *Metadata) GetTemplateByIndex(id int) (Plugin, error) {
 
 // GetPluginByName will iterate the rss metadata to retrieve by name key we also return the index as useful
 // TODO five return values because it evolved, need to refactor
-func (md *RssMetadata) GetPluginByName(key string) (Item, int, []string, []string, []string, error) {
+func (md *RssMetadata) GetPluginByName(key string) (Item, int, []string, []string, []string, []string, error) {
 	rowCount := 0
 	lastCode := ""
 
@@ -46,18 +46,18 @@ func (md *RssMetadata) GetPluginByName(key string) (Item, int, []string, []strin
 		}
 
 		if p.Code == key {
-			semVar, morphVar, pubDate := getPluginVersions(md, p.Code)
-			return p, rowCount, semVar, morphVar, pubDate, nil
+			semVar, morphVar, pubDate, fileName := getPluginVersions(md, p.Code)
+			return p, rowCount, semVar, morphVar, pubDate, fileName, nil
 		}
 
 		lastCode = p.Code
 	}
 
-	return Item{}, rowCount, []string{}, []string{}, []string{}, ERR_PLUGIN_NAME_NOT_FOUND
+	return Item{}, rowCount, []string{}, []string{}, []string{}, []string{}, ERR_PLUGIN_NAME_NOT_FOUND
 }
 
 // GetPluginByIndex will iterate the rss metadata to retrieve by index
-func (md *RssMetadata) GetPluginByIndex(id int) (Item, []string, []string, []string, error) {
+func (md *RssMetadata) GetPluginByIndex(id int) (Item, []string, []string, []string, []string, error) {
 	rowCount := 0
 	lastCode := ""
 
@@ -67,26 +67,27 @@ func (md *RssMetadata) GetPluginByIndex(id int) (Item, []string, []string, []str
 		}
 
 		if id == rowCount {
-			semVar, morphVar, pubDate := getPluginVersions(md, p.Code)
-			return p, semVar, morphVar, pubDate, nil
+			semVar, morphVar, pubDate, fileName := getPluginVersions(md, p.Code)
+			return p, semVar, morphVar, pubDate, fileName, nil
 		}
 
 		lastCode = p.Code
 	}
 
-	return Item{}, []string{}, []string{}, []string{}, ERR_PLUGIN_ID_NOT_FOUND
+	return Item{}, []string{}, []string{}, []string{}, []string{}, ERR_PLUGIN_ID_NOT_FOUND
 }
 
 // helper to iterate the rss meta again and collect versions
-// TODO bit messy with three returns
-func getPluginVersions(meta *RssMetadata, code string) ([]string, []string, []string) {
-	var semVer, morphVer, pubDate []string
+// TODO bit messy with four returns, we'll return a struct when we refactor
+func getPluginVersions(meta *RssMetadata, code string) ([]string, []string, []string, []string) {
+	var semVer, morphVer, pubDate, fileName []string
 	for _, p := range meta.Channel.Items {
 		if p.Code == code {
 			semVer = append(semVer, p.Version)
 			morphVer = append(morphVer, p.MinApplianceVersion)
 			pubDate = append(pubDate, p.PubDate)
+			fileName = append(fileName, p.FileName)
 		}
 	}
-	return semVer, morphVer, pubDate
+	return semVer, morphVer, pubDate, fileName
 }
