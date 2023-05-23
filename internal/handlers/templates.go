@@ -116,9 +116,8 @@ func ListTemplates(meta *metadata.Metadata, args []string) (string, error) {
 		header2 = fmt.Sprintf(rowString, idU, nameU, catU, descU, minU, tagU)
 	}
 
-	output = fmt.Sprintf("%s%s%s", header1, header2, output)
-	fmt.Println(output)
-	return "", nil
+	output = fmt.Sprintf("%s%s%s\n", header1, header2, output)
+	return output, nil
 }
 
 func cutString(data string, cutAt int) string {
