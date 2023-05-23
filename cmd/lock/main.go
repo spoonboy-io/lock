@@ -56,7 +56,7 @@ func main() {
 		var templateInfo string
 		templateInfo, err := handlers.ListTemplates(&templateMetadata, args)
 		if err != nil {
-			logger.FatalError("problem listing templates", err)
+			fmt.Printf("%v\n\n", err)
 		}
 		fmt.Printf(templateInfo)
 	case "template":
@@ -64,7 +64,7 @@ func main() {
 		var tagInfo string
 		tagInfo, err := handlers.ViewTemplate(&templateMetadata, args)
 		if err != nil {
-			logger.FatalError("problem listing repository tags", err)
+			fmt.Printf("%v\n\n", err)
 		}
 		fmt.Printf(tagInfo)
 	case "pick":
@@ -72,7 +72,7 @@ func main() {
 		var projectInfo string
 		projectInfo, err := handlers.NewProject(&templateMetadata, args)
 		if err != nil {
-			logger.FatalError("problem creating new project", err)
+			fmt.Printf("%v\n\n", err)
 		}
 		fmt.Printf(projectInfo)
 	// jars
@@ -81,7 +81,7 @@ func main() {
 		var pluginsInfo string
 		pluginsInfo, err := handlers.ListPlugins(&pluginMetadata, args)
 		if err != nil {
-			logger.FatalError("problem listing plugins", err)
+			fmt.Printf("%v\n\n", err)
 		}
 		fmt.Printf(pluginsInfo)
 	case "plugin":
@@ -89,7 +89,7 @@ func main() {
 		var pluginInfo string
 		pluginInfo, err := handlers.ListPluginVersions(&pluginMetadata, args)
 		if err != nil {
-			logger.FatalError("problem listing plugin versions", err)
+			fmt.Printf("%v\n\n", err)
 		}
 		fmt.Printf(pluginInfo)
 	case "load":
@@ -97,7 +97,7 @@ func main() {
 		var downloadInfo string
 		downloadInfo, err := handlers.DownloadPluginVersion(&pluginMetadata, args)
 		if err != nil {
-			logger.FatalError("problem downloading plugin", err)
+			fmt.Printf("%v\n\n", err)
 		}
 		fmt.Printf(downloadInfo)
 	// general
