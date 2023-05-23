@@ -41,10 +41,10 @@ Version History (with min Morpheus):
 		}
 	} else {
 		// id, converts
-		/*p, err = meta.GetPluginByIndex(id)
+		p, semVer, morphVer, pubDate, err = meta.GetPluginByIndex(id)
 		if err != nil {
 			return "", err
-		}*/
+		}
 	}
 
 	// create the version info

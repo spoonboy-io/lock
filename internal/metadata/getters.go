@@ -58,16 +58,26 @@ func (md *RssMetadata) GetPluginByName(key string) (Item, int, []string, []strin
 	return Item{}, rowCount, []string{}, []string{}, []string{}, ERR_PLUGIN_NAME_NOT_FOUND
 }
 
-/*
 // GetPluginByIndex will iterate the rss metadata to retrieve by index
-func (md *RssMetadata) GetPluginByIndex(id int) (Plugin, error) {
-	for i, p := range md.Channel.Items {
-		if id == i+1 {
-			return p.Plugin, nil
+func (md *RssMetadata) GetPluginByIndex(id int) (Item, []string, []string, []string, error) {
+	rowCount := 0
+	lastCode := ""
+
+	for _, p := range md.Channel.Items {
+		if p.Code != lastCode {
+			rowCount++
 		}
+
+		if id == rowCount {
+			semVar, morphVar, pubDate := getPluginVersions(md, p.Code)
+			return p, semVar, morphVar, pubDate, nil
+		}
+
+		lastCode = p.Code
 	}
-	return Plugin{}, ERR_ID_NOT_FOUND
-}*/
+
+	return Item{}, []string{}, []string{}, []string{}, ERR_PLUGIN_ID_NOT_FOUND
+}
 
 // helper to iterate the rss meta again and collect versions
 // TODO bit messy with three returns

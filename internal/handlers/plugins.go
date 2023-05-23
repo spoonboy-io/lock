@@ -13,7 +13,7 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	// handle optional flag --morpheus
 	var filterMorph string
 
-	var rowString = "%s  %s  %s  %s  %s\n"
+	var rowString = "%s  %s  %s  %s  %s  %s\n"
 
 	for _, v := range args[1:] {
 		if strings.HasPrefix(v, "--morpheus=") {
@@ -29,7 +29,7 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	var semVer, morphVer []string
 
 	// we make a first pass for widths
-	var maxId, maxCode, maxDesc, maxLatestVer, maxLatestMorph int
+	var maxId, maxCode, maxDesc, maxLatestVer, maxLatestMorph, maxVersions int
 	for _, p := range meta.Channel.Items {
 		id := fmt.Sprintf("%d.", rowCount)
 		if p.Code != lastCode {
@@ -54,6 +54,8 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 				if len(morphVer[len(morphVer)-1:][0]) > maxLatestMorph {
 					maxLatestMorph = len(morphVer[len(morphVer)-1:][0])
 				}
+
+				maxVersions = 5
 
 				// reset
 				semVer = []string{}
@@ -84,7 +86,7 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 		id := fmt.Sprintf("%d.", rowCount+1)
 		if p.Code != lastCode {
 			semVer, morphVer := getVersions(meta, p.Code)
-			output += fmt.Sprintf(rowString, padder(id, maxId), padder(p.Code, maxCode), padder(p.Description, maxDesc), padder(semVer[len(semVer)-1:][0], maxLatestVer), padder(morphVer[len(morphVer)-1:][0], maxLatestMorph))
+			output += fmt.Sprintf(rowString, padder(id, maxId), padder(p.Code, maxCode), padder(p.Description, maxDesc), padder(semVer[len(semVer)-1:][0], maxLatestVer), padder("> "+morphVer[len(morphVer)-1:][0], 12), padder(fmt.Sprintf(" %d", len(semVer)), maxVersions))
 			// reset
 			//semVer = []string{}
 			//morphVer = []string{}
@@ -104,21 +106,24 @@ func ListPlugins(meta *metadata.RssMetadata, args []string) (string, error) {
 	nameU := line(maxCode)
 	descH := title("DESCRIPTION", maxDesc)
 	descU := line(maxDesc)
-	minH := title("LATEST", maxLatestVer)
-	minU := line(maxLatestVer)
-	if maxLatestMorph < 12 {
-		maxLatestMorph = 12
+	latestH := title("LATEST", maxLatestVer)
+	latestU := line(maxLatestVer)
+	if maxLatestMorph < 9 {
+		maxLatestMorph = 9
 	}
-	tagH := title("MIN.MORPHEUS", maxLatestMorph)
-	tagU := line(maxLatestMorph)
+	minH := title("MORPHEUS", maxLatestMorph)
+	minU := line(maxLatestMorph)
+
+	versionsH := title("VERSIONS", 8)
+	versionsU := line(8)
 
 	header1 := ""
 	header2 := ""
 	if output == "" {
 		output = "No plugins found.\n"
 	} else {
-		header1 = fmt.Sprintf(rowString, idH, nameH, descH, minH, tagH)
-		header2 = fmt.Sprintf(rowString, idU, nameU, descU, minU, tagU)
+		header1 = fmt.Sprintf(rowString, idH, nameH, descH, latestH, minH, versionsH)
+		header2 = fmt.Sprintf(rowString, idU, nameU, descU, latestU, minU, versionsU)
 	}
 
 	output = fmt.Sprintf("%s%s%s\n", header1, header2, output)
