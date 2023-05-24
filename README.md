@@ -32,9 +32,9 @@ You can find the [latest software here](https://github.com/spoonboy-io/lock/rele
  - Clone a starter template into a new project folder ready for customisation.
 
 #### Plugins
- - List prebuilt plugins available in JAR format
- - Inspect plugin, its version history and compatability
- - Download a plugin by version or latest
+ - List prebuilt plugins available in JAR format.
+ - Inspect plugin, its version history and compatability.
+ - Download a plugin by version or latest.
 
 ### Usage
 
