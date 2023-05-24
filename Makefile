@@ -9,3 +9,6 @@ release:
 	read VERSION; \
 	git tag -a $$VERSION -m "Releasing "$$VERSION; \
 	git push origin $$VERSION
+
+install:
+	go install ./cmd/lock/.

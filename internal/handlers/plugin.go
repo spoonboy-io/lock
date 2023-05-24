@@ -51,8 +51,7 @@ Version History (with min Morpheus):
 	verTemplate := "  %s (> %s), published %s\n"
 	verOutput := ""
 
-	// we want latest first
-	for i := len(semVer) - 1; i >= 0; i-- {
+	for i := range semVer {
 		verOutput += fmt.Sprintf(verTemplate, semVer[i], morphVer[i], pubDate[i])
 	}
 

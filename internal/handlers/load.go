@@ -85,13 +85,12 @@ func DownloadPluginVersion(meta *metadata.RssMetadata, args []string) (string, e
 
 	// confirm
 	output := `Morpheus plugin downloaded:
-  Created in folder: %s
-  Filename := %s		
+  Created at: %s		
   Using plugin: %s
   Using version: %s
 
 `
 
-	output = fmt.Sprintf(output, folder, resp.Filename, p.Code, version)
+	output = fmt.Sprintf(output, resp.Filename, p.Code, version)
 	return output, nil
 }
